@@ -1,29 +1,16 @@
-use rand::Rng;
-use std::cmp::Ordering;
 use std::io;
 
 fn main() {
-    println!("Guess the number!");
+    println!("Enter your weight (kg): ");
+    let mut input = String::new();
 
-    let secret_number = rand::thread_rng().gen_range(1..101);
+    io::stdin().read_line(&mut input).unwrap();
 
-    println!("The secret number is: {}", secret_number);
+    let weight: f32 = input.trim().parse().unwrap();
+    let mars_weight = calculate_weight_on_mars(weight);
+    println!("Weight on Mars: {}kg", mars_weight);
+}
 
-    println!("Please input your guess.");
-
-    let mut guess = String::new();
-
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");
-
-    let guess: u32 = guess.trim().parse().expect("Please type a number!");
-
-    println!("You guessed: {}", guess);
-
-    match guess.cmp(&secret_number) {
-        Ordering::Less => println!("Too small!"),
-        Ordering::Greater => println!("Too big!"),
-        Ordering::Equal => println!("You win!"),
-    }
+fn calculate_weight_on_mars(weight: f32) -> f32 {
+    (weight / 9.81) * 3.711
 }
